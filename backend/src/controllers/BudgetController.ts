@@ -3,7 +3,15 @@ import Budget from "../models/Budget";
 
 export class BudgetController {
   static getAll = async (req: Request, res: Response) => {
-    res.json({ message: "Budgets obtenidos..." });
+    try {
+      const budgets = await Budget.findAll({
+        order: [["createdAt", "DESC"]],
+        // TODO: filtrar por el usuario autenticado
+      });
+      res.json(budgets);
+    } catch (error) {
+      res.status(500).json({ error: "Hubo un error" });
+    }
   };
 
   static createBudget = async (req: Request, res: Response) => {
@@ -19,18 +27,49 @@ export class BudgetController {
   };
 
   static getOneByID = async (req: Request, res: Response) => {
-    const id = req.params.id;
-
-    res.json({ message: `Budget ${id} obtenido...` });
+    try {
+      const { id } = req.params;
+      const budget = await Budget.findByPk(id);
+      if (!budget) {
+        const error = new Error("Presupuesto no encontrado");
+        return res.status(404).json({ error: error.message });
+      }
+      res.json(budget);
+    } catch (error) {
+      res.status(500).json({ error: "Hubo un error" });
+    }
   };
 
   static updateBudget = async (req: Request, res: Response) => {
-    const updateData = req.body;
-    res.json({ changes: updateData });
+    try {
+      const { id } = req.params;
+      const budget = await Budget.findByPk(id);
+      if (!budget) {
+        const error = new Error("Presupuesto no encontrado");
+        return res.status(404).json({ error: error.message });
+      }
+
+      await budget.update(req.body);
+      res.json({ message: "Presupuesto actualizado correctamente" });
+    } catch (error) {
+      res.status(500).json({ error: "Hubo un error" });
+    }
   };
 
   static deleteBudget = async (req: Request, res: Response) => {
-    const id = req.params.id;
-    res.json({ message: `Budget ${id} eliminado..` });
+    try {
+      const { id } = req.params;
+      const budget = await Budget.findByPk(id);
+
+      if (!budget) {
+        const error = new Error("Presupuesto no encontrado.");
+        return res.status(404).json({ error: error.message });
+      }
+
+      await budget.destroy();
+      res.json({ message: "Presupuesto eliminado" });
+    } catch (error) {
+      res.status(500).json({ error: "Hubo un error" });
+    }
   };
 }
