@@ -7,6 +7,7 @@ import {
   ForeignKey,
   Model,
 } from "sequelize-typescript";
+import Expense from "./Expense";
 
 @Table({
   tableName: "budgets",
@@ -20,6 +21,13 @@ class Budget extends Model {
     type: DataType.DECIMAL,
   })
   declare amount: number;
+
+  @HasMany(() => Expense, {
+    // Si se elimina un presupuesto va en cascada y borra los hijos (gastos)
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
+  })
+  declare expenses: Expense[];
 }
 
 export default Budget;
