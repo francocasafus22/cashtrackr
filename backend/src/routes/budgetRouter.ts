@@ -17,6 +17,8 @@ import {
 const router = Router();
 router.param("budgetId", validateBudgetId);
 router.param("budgetId", validateBudgetExist);
+router.param("expenseId", validateExpenseId);
+router.param("expenseId", validateExpenseExist);
 
 router.get("/", BudgetController.getAll);
 

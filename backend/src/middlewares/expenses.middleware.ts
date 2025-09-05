@@ -5,7 +5,7 @@ import Expense from "../models/Expense";
 declare global {
   namespace Express {
     interface Request {
-      expense: Expense;
+      expense?: Expense;
     }
   }
 }
