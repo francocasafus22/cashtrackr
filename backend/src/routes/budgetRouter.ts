@@ -6,7 +6,7 @@ import {
   validateBudgetExist,
   validateBudgetId,
   validateBudgetInput,
-} from "../middlewares/budget";
+} from "../middlewares/budget.middleware";
 import { ExpensesController } from "../controllers/ExpensesController";
 import {
   validateExpenseExist,
