@@ -89,4 +89,48 @@ export class AuthController {
       res.status(500).json({ error: error.message });
     }
   };
+
+  static forgotPassword = async (req: Request, res: Response) => {
+    try {
+      const { email } = req.body;
+
+      const user = await User.findOne({ where: { email } });
+      if (!user) {
+        const error = new Error("Usuario no encontrado");
+        res.status(404).json({ error: error.message });
+        return;
+      }
+
+      user.token = generateToken();
+      await user.save();
+
+      await AuthEmail.sendPasswordResetToken({
+        name: user.name,
+        email: user.email,
+        token: user.token,
+      });
+
+      res.json({ message: "Revisa tu email para restablecer tu contraseña" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+  static validateToken = async (req: Request, res: Response) => {
+    try {
+      const { token } = req.body;
+
+      const tokenExist = await User.findOne({ where: { token } });
+
+      if (!tokenExist) {
+        const error = new Error("Token no válido");
+        res.status(404).json({ error: error.message });
+        return;
+      }
+
+      res.json("token valido");
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
 }

@@ -39,4 +39,21 @@ router.post(
   AuthController.confirmAccount
 );
 
+router.post(
+  "/forgot-password",
+  body("email").isEmail().withMessage("Email no válido"),
+  handleInputErrors,
+  AuthController.forgotPassword
+);
+
+router.post(
+  "/validate-token",
+  body("token")
+    .notEmpty()
+    .isLength({ min: 6, max: 6 })
+    .withMessage("Token no válido"),
+  handleInputErrors,
+  AuthController.validateToken
+);
+
 export default router;
