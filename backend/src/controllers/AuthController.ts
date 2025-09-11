@@ -133,4 +133,31 @@ export class AuthController {
       res.status(500).json({ error: error.message });
     }
   };
+
+  static resetPasswordWithToken = async (req: Request, res: Response) => {
+    try {
+      const { token } = req.params;
+      const { password } = req.body;
+
+      const user = await User.findOne({ where: { token } });
+
+      if (!user) {
+        const error = new Error("Token no válido");
+        res.status(404).json({ error: error.message });
+        return;
+      }
+
+      user.password = await hashPassworrd(password);
+      user.token = null;
+      await user.save();
+
+      res.json({ message: "Contraseña actualizada correctamente" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+  static user = async (req: Request, res: Response) => {
+    res.json(req.user);
+  };
 }
