@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { body, param, validationResult } from "express-validator";
 import Budget from "../models/Budget";
+import Expense from "../models/Expense";
 
 declare global {
   namespace Express {
@@ -36,12 +37,38 @@ export const validateBudgetExist = async (
 ) => {
   try {
     const { budgetId } = req.params;
-    const budget = await Budget.findByPk(budgetId);
+    const budget = await Budget.findByPk(budgetId, {
+      include: [Expense],
+    });
     if (!budget) {
       const error = new Error("Presupuesto no encontrado");
-      return res.status(404).json({ error: error.message });
+      res.status(404).json({ error: error.message });
+      return;
     }
     req.budget = budget;
+    next();
+  } catch (error) {
+    res.status(500).json({ error: "Hubo un error" });
+  }
+};
+
+export const hasAccess = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.user;
+    const budget = req.budget;
+
+    if (budget.userId !== id) {
+      const error = new Error("Presupuesto no encontrado");
+      res.status(404).json({ erorr: error.message });
+      return;
+    }
+
+    req.budget = budget;
+
     next();
   } catch (error) {
     res.status(500).json({ error: "Hubo un error" });
