@@ -15,32 +15,38 @@ export const authenticate = async (
   res: Response,
   next: NextFunction
 ) => {
-  const bearer = req.headers.authorization;
-
-  if (!bearer) {
-    const error = new Error("No estás autorizado");
-    res.status(401).json({ error: error.message });
-    return;
-  }
-
-  const [, token] = bearer.split(" ");
-
-  if (!token) {
-    const error = new Error("Token no válido");
-    res.status(401).json({ error: error.message });
-  }
-
-  const decoded = verifyJWT(token);
-  if (typeof decoded == "object" && decoded.id) {
-    req.user = await User.findByPk(decoded.id, {
-      attributes: ["id", "name", "email"],
-    });
-
-    next();
-  }
-
   try {
-  } catch (error) {
-    res.status(500).json({ error: "Token no válido" });
+    const bearer = req.headers.authorization;
+
+    if (!bearer) {
+      const error = new Error("No estás autorizado");
+      res.status(401).json({ error: error.message });
+      return;
+    }
+
+    const [, token] = bearer.split(" ");
+
+    if (!token) {
+      const error = new Error("Token no válido");
+      res.status(401).json({ error: error.message });
+      return;
+    }
+
+    const decoded = verifyJWT(token);
+    if (typeof decoded == "object" && decoded.id) {
+      req.user = await User.findByPk(decoded.id, {
+        attributes: ["id", "name", "email"],
+      });
+
+      if (!req.user) {
+        res.status(404).json({ error: "Usuario no encontrado" });
+        return;
+      }
+
+      next();
+    }
+  } catch (e) {
+    const error = new Error("Token no válido");
+    res.status(500).json({ error: error.message });
   }
 };

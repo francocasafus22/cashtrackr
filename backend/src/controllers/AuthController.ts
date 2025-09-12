@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import User from "../models/User";
-import { checkPassword, hashPassworrd } from "../utils/auth";
+import { checkPassword, hashPassword } from "../utils/auth";
 import { generateToken } from "../utils/token";
 import { AuthEmail } from "../emails/AuthEmail";
 import { generateJWT } from "../utils/jwt";
@@ -19,7 +19,7 @@ export class AuthController {
       }
 
       const user = new User(req.body);
-      user.password = await hashPassworrd(req.body.password);
+      user.password = await hashPassword(req.body.password);
       user.token = generateToken();
       await user.save();
 
@@ -147,7 +147,7 @@ export class AuthController {
         return;
       }
 
-      user.password = await hashPassworrd(password);
+      user.password = await hashPassword(password);
       user.token = null;
       await user.save();
 
@@ -157,7 +157,53 @@ export class AuthController {
     }
   };
 
+  static updateCurrentPassword = async (req: Request, res: Response) => {
+    const { current_password, password } = req.body;
+    const { id } = req.user;
+
+    try {
+      const user = await User.findByPk(id, { attributes: ["id", "password"] });
+
+      const isCorrect = await checkPassword(current_password, user.password);
+
+      if (!isCorrect) {
+        const error = new Error("La contraseña actual es incorrecta");
+        res.status(401).json({ error: error.message });
+        return;
+      }
+
+      const newHash = await hashPassword(password);
+
+      await user.update({ password: newHash });
+
+      res.json({ message: "Contraseña modificada correctamente" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
   static user = async (req: Request, res: Response) => {
     res.json(req.user);
+  };
+
+  static checkPassword = async (req: Request, res: Response) => {
+    try {
+      const { password } = req.body;
+      const { id } = req.user;
+
+      const user = await User.findByPk(id, { attributes: ["password"] });
+
+      const isCorrect = await checkPassword(password, user.password);
+
+      if (!isCorrect) {
+        const error = new Error("La contraseña es incorrecta");
+        res.status(401).json({ error: error.message });
+        return;
+      }
+
+      res.json({ message: "La contraseña es correcta" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   };
 }

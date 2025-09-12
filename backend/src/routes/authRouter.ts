@@ -40,6 +40,7 @@ router.post(
   AuthController.confirmAccount
 );
 
+// Envia el mail con el token, para cambiar la contraseña olvidada
 router.post(
   "/forgot-password",
   body("email").isEmail().withMessage("Email no válido"),
@@ -47,6 +48,7 @@ router.post(
   AuthController.forgotPassword
 );
 
+// Valida el token recibido al mail
 router.post(
   "/validate-token",
   body("token")
@@ -57,6 +59,7 @@ router.post(
   AuthController.validateToken
 );
 
+// Cambia la contraseña con el token validado
 router.post(
   "/reset-password/:token",
 
@@ -71,6 +74,35 @@ router.post(
   AuthController.resetPasswordWithToken
 );
 
-router.get("/user", authenticate, AuthController.user);
+// Cambia la contraseña actual ya sabiendola
+router.post(
+  "/update-password",
+  authenticate,
+  body("current_password")
+    .notEmpty()
+    .withMessage("Debe ingresar su contraseña actual"),
+  body("password")
+    .isLength({ min: 8 })
+    .withMessage("La nueva contraseña es muy corta, mínimo 8 caracteres.")
+    .custom((value, { req }) => value !== req.body.current_password)
+    .withMessage("La nueva contraseña debe ser diferente a la actual."),
+  handleInputErrors,
+  AuthController.updateCurrentPassword
+);
+
+router.post(
+  "/user",
+  authenticate,
+
+  AuthController.user
+);
+
+router.post(
+  "/check-password",
+  authenticate,
+  body("password").notEmpty().withMessage("Debe su contraseña"),
+  handleInputErrors,
+  AuthController.checkPassword
+);
 
 export default router;
