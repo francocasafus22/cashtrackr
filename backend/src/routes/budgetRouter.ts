@@ -32,7 +32,7 @@ router.post(
   "/",
   validateBudgetInput,
   handleInputErrors,
-  BudgetController.createBudget
+  BudgetController.create
 );
 
 router.get("/:budgetId", BudgetController.getOneByID);

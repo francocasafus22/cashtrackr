@@ -16,14 +16,15 @@ export class BudgetController {
     }
   };
 
-  static createBudget = async (req: Request, res: Response) => {
+  static create = async (req: Request, res: Response) => {
     try {
-      const budget = new Budget(req.body);
+      const budget = await Budget.create(req.body);
       const { id } = req.user;
 
       budget.userId = id;
 
       await budget.save();
+
       res.status(201).json("Presupuesto creado correctamente");
     } catch (error) {
       // console.log(error);
@@ -32,7 +33,10 @@ export class BudgetController {
   };
 
   static getOneByID = async (req: Request, res: Response) => {
-    res.json(req.budget);
+    const budget = await Budget.findByPk(req.budget.id, {
+      include: [Expense],
+    });
+    res.json(budget);
   };
 
   static updateBudget = async (req: Request, res: Response) => {
