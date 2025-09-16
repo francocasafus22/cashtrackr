@@ -58,16 +58,11 @@ export const hasAccess = async (
   next: NextFunction
 ) => {
   try {
-    const { id } = req.user;
-    const budget = req.budget;
-
-    if (budget.userId !== id) {
-      const error = new Error("Presupuesto no encontrado");
-      res.status(404).json({ erorr: error.message });
+    if (req.budget.userId !== req.user.id) {
+      const error = new Error("Acción no válida");
+      res.status(401).json({ erorr: error.message });
       return;
     }
-
-    req.budget = budget;
 
     next();
   } catch (error) {
