@@ -60,7 +60,7 @@ export const hasAccess = async (
   try {
     if (req.budget.userId !== req.user.id) {
       const error = new Error("Acción no válida");
-      res.status(401).json({ erorr: error.message });
+      res.status(401).json({ error: error.message });
       return;
     }
 

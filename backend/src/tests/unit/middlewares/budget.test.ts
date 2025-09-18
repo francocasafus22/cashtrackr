@@ -98,7 +98,7 @@ describe("budget - hasAccess", () => {
     const data = res._getJSONData();
 
     expect(next).not.toHaveBeenCalled();
-    expect(data).toEqual({ erorr: "Acción no válida" });
+    expect(data).toEqual({ error: "Acción no válida" });
     expect(res.statusCode).toBe(401);
   });
   it("should handle server error", async () => {
