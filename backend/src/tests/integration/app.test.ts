@@ -404,6 +404,71 @@ describe(" GET /api/budgets", () => {
   });
 });
 
-describe(" PUT /api/budgets", () => {
-  
-})
+describe("PUT /api/budgets", () => {
+  beforeAll(async () => {
+    await authenticateUser();
+  });
+
+  it("should reject unauthenticate get request to budget by id without a jwt", async () => {
+    const response = await request(server).put("/api/budgets/1");
+
+    expect(response.body).toHaveProperty("error");
+    expect(response.body.error).toBe("No estás autorizado");
+    expect(response.statusCode).toBe(401);
+  });
+
+  it("should display validation errors if the form is empty", async () => {
+    const response = await request(server)
+      .put("/api/budgets/1")
+      .auth(jwt_token, { type: "bearer" })
+      .send({});
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.errors).toBeTruthy();
+    expect(response.body.errors).toHaveLength(4);
+  });
+
+  it("should return a success message if budget is updated successfully", async () => {
+    const response = await request(server)
+      .put("/api/budgets/1")
+      .auth(jwt_token, { type: "bearer" })
+      .send({ name: "vacaciones orlando", amount: "25000" });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("message");
+    expect(response.body.message).toBe("Presupuesto actualizado correctamente");
+  });
+});
+
+describe("DELETE /api/budgets", () => {
+  beforeAll(async () => {
+    await authenticateUser();
+  });
+
+  it("should reject unauthenticate delete request to budget by id without a jwt", async () => {
+    const response = await request(server).delete("/api/budgets/1");
+
+    expect(response.body).toHaveProperty("error");
+    expect(response.body.error).toBe("No estás autorizado");
+    expect(response.statusCode).toBe(401);
+  });
+
+  it("should return 404 not found when a budget doesnt exist", async () => {
+    const response = await request(server)
+      .delete("/api/budgets/500")
+      .auth(jwt_token, { type: "bearer" });
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.error).toBe("Presupuesto no encontrado");
+  });
+
+  it("should return a success message if budget is deleted successfully", async () => {
+    const response = await request(server)
+      .delete("/api/budgets/1")
+      .auth(jwt_token, { type: "bearer" });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("message");
+    expect(response.body.message).toBe("Presupuesto eliminado");
+  });
+});
