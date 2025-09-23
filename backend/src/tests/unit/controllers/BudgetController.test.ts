@@ -101,7 +101,7 @@ describe("BudgetController.create", () => {
     await BudgetController.create(req, res);
     const data = res._getJSONData();
     expect(res.statusCode).toBe(201);
-    expect(data).toBe("Presupuesto creado correctamente");
+    expect(data.message).toBe("Presupuesto creado correctamente");
     expect(mockBudget.save).toHaveBeenCalledTimes(1);
     expect(Budget.create).toHaveBeenCalledWith(req.body);
   });

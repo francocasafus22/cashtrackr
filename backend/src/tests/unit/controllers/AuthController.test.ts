@@ -181,7 +181,7 @@ describe("AuthController - login", () => {
     await AuthController.login(req, res);
 
     expect(res.statusCode).toBe(200);
-    expect(res._getJSONData()).toEqual(jwtToken);
+    expect(res._getJSONData()).toEqual({ token: jwtToken });
     expect(checkPassword).toHaveBeenCalledWith(
       req.body.password,
       users[1].password

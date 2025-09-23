@@ -20,7 +20,13 @@ export class AuthController {
 
       const user = await User.create(req.body);
       user.password = await hashPassword(req.body.password);
-      user.token = generateToken();
+      const token = generateToken();
+      user.token = token;
+      // Guardar el token en global, para poder utilizarla en los tests
+      if (process.env.NODE_ENV !== "production") {
+        globalThis.cashTrackrConfirmationToken = token;
+      }
+
       await user.save();
 
       await AuthEmail.sendConfirmationEmail({
@@ -84,7 +90,7 @@ export class AuthController {
 
       const token = generateJWT(user.id);
 
-      res.json(token);
+      res.json({ token });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
