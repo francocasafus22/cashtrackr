@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const DATABASE_URL =
+export const DATABASE_URL =
   process.env.NODE_ENV === "test"
     ? process.env.DATABASE_URL_TEST
     : process.env.DATABASE_URL_DEVELOPMENT;
