@@ -17,6 +17,20 @@ export const RegisterSchema = z
     path: ["password_confirmation"],
   });
 
+  export const LoginSchema = z
+  .object({
+    email: z
+      .string()
+      .min(1, { message: "El email es obligatorio" })
+      .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: "Email no válido" }),
+    password: z
+      .string().min(1, {message: "El password es obligatorio"})
+  })
+
+export const JWTSchema = z.object({
+  token: z.string({message: "Token no válido"})
+})
+
 export const SuccessSchema = z.object({
   message: z.string().min(1, { message: "Valor no valido" }),
 });
