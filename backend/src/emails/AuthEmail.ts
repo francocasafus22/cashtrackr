@@ -50,8 +50,8 @@ export class AuthEmail {
           display: inline-block;
           user-select: all;
         }
-        button {
-          margin-top: 20px;
+        a {
+          margin-top: 30px;
           padding: 10px 20px;
           background-color: #1e90ff;
           color: #fff;
@@ -69,18 +69,9 @@ export class AuthEmail {
         <p>Para activar tu cuenta, copia el siguiente token y pégalo en la página de confirmación:</p>
         <div class="token" id="token">${user.token}</div>
         <br>
-        <button onclick="copyToken()">Copiar Token</button>
+        <a href="${process.env.FRONTEND_URL}/auth/confirm-account">Confirmar Cuenta</a>
       </div>
-      <script>
-        function copyToken() {
-          const token = document.getElementById('token').innerText;
-          navigator.clipboard.writeText(token).then(() => {
-            alert('Token copiado al portapapeles!');
-          }).catch(err => {
-            alert('Error al copiar el token: ' + err);
-          });
-        }
-      </script>
+      
     </body>
     </html>
   
@@ -134,7 +125,7 @@ export class AuthEmail {
           display: inline-block;
           user-select: all;
         }
-        button {
+        a {
           margin-top: 20px;
           padding: 10px 20px;
           background-color: #1e90ff;
@@ -153,18 +144,8 @@ export class AuthEmail {
         <p>Para restabelecer la contraseña, copia el siguiente token y pégalo en la página de confirmación:</p>
         <div class="token" id="token">${user.token}</div>
         <br>
-        <button onclick="copyToken()">Copiar Token</button>
+        <a href:"${process.env.FRONTEND_URL}/auth/new-password">Reestablecer Contraseña</a>
       </div>
-      <script>
-        function copyToken() {
-          const token = document.getElementById('token').innerText;
-          navigator.clipboard.writeText(token).then(() => {
-            alert('Token copiado al portapapeles!');
-          }).catch(err => {
-            alert('Error al copiar el token: ' + err);
-          });
-        }
-      </script>
     </body>
     </html>
   

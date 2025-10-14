@@ -2,18 +2,30 @@
 
 import { register } from "@/actions/create-account-action";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import ErrorMessage from "../ui/ErrorMessage";
 import SuccessMessage from "../ui/SuccessMessage";
+import Spinner from "../ui/Spinner";
 
 export default function RegisterForm() {
-  const [state, dispatch] = useActionState(register, {
+
+  const ref = useRef<HTMLFormElement>(null)
+
+  const [state, dispatch, isPending] = useActionState(register, {
     errors: [],
     success: "",
   });
 
+  useEffect(()=>{
+    // Si el register es exitoso 
+    if(state.success){
+      // Resetea el formulario (ref => form)
+      ref.current?.reset();
+    }
+  }, [state])
+
   return (
-    <form className="mt-14 space-y-5" noValidate action={dispatch}>
+    <form className="mt-14 space-y-5" noValidate action={dispatch} ref={ref}>
       {state.errors.map((error) => (
         <ErrorMessage>{error}</ErrorMessage>
       ))}
@@ -64,11 +76,13 @@ export default function RegisterForm() {
         />
       </div>
 
-      <input
+      <button
         type="submit"
-        value="Registrarme"
+        disabled={isPending}
         className="bg-purple-950 hover:bg-purple-800 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer block"
-      />
+      >
+        {isPending ? <Spinner color="text-orange-400"/> : "Registrarme"}
+      </button>
     </form>
   );
 }

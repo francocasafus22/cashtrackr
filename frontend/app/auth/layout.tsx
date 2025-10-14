@@ -1,4 +1,5 @@
 import Logo from "@/components/ui/Logo";
+import ToastNotification from "@/components/ui/ToastNotification";
 
 export default function AuthLayout({
   children,
@@ -6,6 +7,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
+    <>
     <div className="lg:grid lg:grid-cols-2 lg:min-h-screen">
       {/* Lado izquierdo con fondo */}
       <div className="flex justify-center bg-purple-950 background-auth">
@@ -24,5 +26,10 @@ export default function AuthLayout({
         </div>
       </div>
     </div>
+    
+    <ToastNotification/>
+    </>
+
+
   );
 }
