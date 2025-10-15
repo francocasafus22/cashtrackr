@@ -50,7 +50,6 @@ export default function LoginForm() {
 
         <button
           type="submit"
-         
           className="bg-purple-950 hover:bg-purple-800 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer"
         >{isPending ? <Spinner color="text-orange-400"/> : "Iniciar Sesion"}</button>
       </form>
