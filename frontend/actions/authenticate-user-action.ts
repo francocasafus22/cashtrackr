@@ -2,6 +2,7 @@
 
 import { ErrorSchema, JWTSchema, LoginSchema, SuccessSchema } from "@/src/schemas";
 import { cookies } from "next/headers";
+import {redirect} from "next/navigation"
 
 type ActionStateType = {
   errors: string[];
@@ -56,9 +57,6 @@ export async function authenticate(prevState: ActionStateType, formData: FormDat
       httpOnly: true,
       path:"/"
     })
-
-    return {
-        errors: [],
-        success: jwtMessage.token,
-    }
+    
+    redirect("/admin")
 }

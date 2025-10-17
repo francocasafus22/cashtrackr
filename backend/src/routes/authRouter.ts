@@ -87,7 +87,7 @@ router.post(
   AuthController.updateCurrentPassword
 );
 
-router.post(
+router.get(
   "/user",
   authenticate,
 

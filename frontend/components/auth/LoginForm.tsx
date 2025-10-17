@@ -17,7 +17,7 @@ export default function LoginForm() {
 
   useEffect(()=>{
       state.success? 
-        toast.success("Has iniciado sesión con exito", {onClose: ()=>{navigate.push("/")}, autoClose:2500})
+        toast.success("Has iniciado sesión con exito")
       : state.errors.map(error=>toast.error(error))
       
   }, [state])

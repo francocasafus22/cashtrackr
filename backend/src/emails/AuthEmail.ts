@@ -144,7 +144,7 @@ export class AuthEmail {
         <p>Para restabelecer la contraseña, copia el siguiente token y pégalo en la página de confirmación:</p>
         <div class="token" id="token">${user.token}</div>
         <br>
-        <a href:"${process.env.FRONTEND_URL}/auth/new-password">Reestablecer Contraseña</a>
+        <a href="${process.env.FRONTEND_URL}/auth/new-password">Reestablecer Contraseña</a>
       </div>
     </body>
     </html>
