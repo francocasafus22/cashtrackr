@@ -31,6 +31,16 @@ export const RegisterSchema = z
       .string().min(1, {message: "El password es obligatorio"})
   })
 
+  export const ResetPasswordSchema = z.object({
+    password: z
+      .string()
+      .min(8, { message: "EL password es muy corto, minimo 8 caracteres" }),
+    password_confirmation: z.string(),
+  }).refine(data=>data.password == data.password_confirmation, {
+    message: "Las contraseñas deben ser iguales",
+    path: ["password_confirmation"]
+  })
+
 export const UserSchema = z.object({
   id: z.number(),
   name: z.string(),

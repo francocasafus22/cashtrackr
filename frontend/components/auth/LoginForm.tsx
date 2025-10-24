@@ -8,8 +8,6 @@ import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
 
-  const navigate = useRouter();
-
   const [state, dispatch, isPending] = useActionState(authenticate, {
     errors: [],
     success: ""
