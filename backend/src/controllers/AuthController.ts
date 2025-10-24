@@ -134,7 +134,7 @@ export class AuthController {
         return;
       }
 
-      res.json("token valido");
+      res.json({message: "Token válido, asigna un nuevo password"});
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
