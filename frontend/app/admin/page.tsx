@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { BudgetAPIResponseSchema, BudgetsAPIResponseShcema } from "@/src/schemas";
 import getToken from "@/src/auth/token";
 import { formatCurrency, formatDate } from "@/src/utils";
+import BudgetMenu from "@/components/budgets/BudgetMenu";
 
 export const metadata : Metadata = {
   title: "CashTrackr - Panel de Administración",
@@ -52,7 +53,7 @@ export default async function AdminPage() {
       </div>
 
       {budgets.length ? (
-        <ul role="list" className="divide-y divide-gray-300 border shadow-lg mt-10 ">
+        <ul role="list" className="divide-y divide-gray-300 border border-gray-300 shadow-lg mt-10 ">
           {budgets.map((budget) => (
             <li key={budget.id} className="flex justify-between gap-x-6 p-5 ">
               <div className="flex min-w-0 gap-x-4">
@@ -72,7 +73,7 @@ export default async function AdminPage() {
                 </div>
               </div>
               <div className="flex shrink-0 items-center gap-x-6">
-                
+                <BudgetMenu budgetId={budget.id}/>
               </div>
             </li>
           ))}

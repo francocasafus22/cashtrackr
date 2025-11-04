@@ -63,7 +63,6 @@ export const BudgetAPIResponseSchema = z.object({
 
 export const BudgetsAPIResponseShcema = z.array(BudgetAPIResponseSchema)
 
-export type User = z.infer<typeof UserSchema>
 
 export const JWTSchema = z.object({
   token: z.string({message: "Token no válido"})
@@ -78,3 +77,6 @@ export const ErrorSchema = z.object({
 })
 
 export const TokenSchema = z.string({message: "Token no valido"}).length(6, {message: "Token no valido"})
+
+export type User = z.infer<typeof UserSchema>
+export type Budget = z.infer<typeof BudgetAPIResponseSchema>
