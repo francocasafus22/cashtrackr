@@ -4,6 +4,7 @@ import { resetPassword } from "@/actions/reset-password-action";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
+import Spinner from "../ui/Spinner";
 
 type ResetPasswordProps = {
     token : string,
@@ -15,7 +16,7 @@ export default function ResetPasswordForm({token} : ResetPasswordProps) {
 
     const resetPasswordWithToken = resetPassword.bind(null, token)
 
-    const [state, dispatch] = useActionState(resetPasswordWithToken, {
+    const [state, dispatch, isPending] = useActionState(resetPasswordWithToken, {
         errors: [],
         success: ""
     })
@@ -55,11 +56,10 @@ export default function ResetPasswordForm({token} : ResetPasswordProps) {
                 />
             </div>
 
-            <input
-                type="submit"
-                value="Guardar Password"
+            <button
+                type="submit"                
                 className="bg-purple-950 hover:bg-purple-800 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer block"
-            />
+            >{isPending ? <Spinner color="text-amber-500"/> : "Restablecer Contraseña"}</button>
         </form>
     );
 }

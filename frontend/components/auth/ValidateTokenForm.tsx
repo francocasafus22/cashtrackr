@@ -2,6 +2,7 @@ import { validateToken } from "@/actions/validate-token-action";
 import { PinInput, PinInputField } from "@chakra-ui/pin-input";
 import { Dispatch, SetStateAction, startTransition, useActionState, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Spinner from "../ui/Spinner";
 
 type ValidateTokenProps = {
     setIsValidPassword : Dispatch<SetStateAction<boolean>>,
@@ -15,7 +16,7 @@ export default function ValidateTokenForm({setIsValidPassword, token, setToken}:
 
     const validateTokenInput = validateToken.bind(null, token)
 
-    const [state, dispatch] = useActionState(validateTokenInput, {
+    const [state, dispatch, isPending] = useActionState(validateTokenInput, {
         errors: [],
         success: ''
     })
@@ -49,7 +50,8 @@ export default function ValidateTokenForm({setIsValidPassword, token, setToken}:
 
     return (
         <div className="flex justify-center gap-5 my-10">
-            <PinInput
+            {isPending ? <Spinner color="text-amber-500"/> : (
+                <PinInput
                 value={token}
                 onChange={handleChange}
                 onComplete={handleComplete}
@@ -61,6 +63,8 @@ export default function ValidateTokenForm({setIsValidPassword, token, setToken}:
                 <PinInputField className="h-10 w-10 text-center border border-gray-300 shadow rounded-lg placeholder-white" />
                 <PinInputField className="h-10 w-10 text-center border border-gray-300 shadow rounded-lg placeholder-white" />
             </PinInput>
+            )}
+            
         </div>
     )
 }
