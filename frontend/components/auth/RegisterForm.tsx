@@ -6,6 +6,7 @@ import { useActionState, useEffect, useRef } from "react";
 import ErrorMessage from "../ui/ErrorMessage";
 import SuccessMessage from "../ui/SuccessMessage";
 import Spinner from "../ui/Spinner";
+import { toast } from "react-toastify";
 
 export default function RegisterForm() {
 
@@ -20,6 +21,7 @@ export default function RegisterForm() {
     // Si el register es exitoso 
     if(state.success){
       // Resetea el formulario (ref => form)
+      toast.info("Revisá el mail para confirmar tu cuenta");
       ref.current?.reset();
     }
   }, [state])

@@ -50,6 +50,7 @@ export async function register(prevState: ActionStateType, formData: FormData) {
   }
   
   const successMessage = SuccessSchema.parse(await req.json());
+  
 
   return {
     errors: [],
