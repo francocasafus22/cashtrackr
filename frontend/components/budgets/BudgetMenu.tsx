@@ -41,7 +41,7 @@ export default function BudgetMenu({budgetId} : {budgetId: Budget['id']}) {
                     </MenuItem>
                     <MenuItem>
                         <Link
-                            href={`/admin/budgets/${budgetId}`}
+                            href={`/admin/budgets/${budgetId}/edit`}
                             className="block px-3 py-1 text-sm leading-6 text-gray-900  hover:bg-gray-100"
                         >
                             Editar Presupuesto

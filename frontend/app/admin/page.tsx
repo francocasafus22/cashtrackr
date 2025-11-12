@@ -53,7 +53,7 @@ export default async function AdminPage() {
       </div>
 
       {budgets.length ? (
-        <ul role="list" className="divide-y divide-gray-300 border border-gray-300 shadow-lg mt-10 ">
+        <ul role="list" className="divide-y divide-gray-300 border border-gray-300 shadow-lg mt-10 rounded-xl">
           {budgets.map((budget) => (
             <li key={budget.id} className="flex justify-between gap-x-6 p-5 ">
               <div className="flex min-w-0 gap-x-4">
