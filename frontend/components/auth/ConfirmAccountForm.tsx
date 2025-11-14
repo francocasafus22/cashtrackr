@@ -34,7 +34,7 @@ export default function ConfirmAccountForm() {
     useEffect(()=>{
       
         state.success ?
-            toast.success(state.success, {onClose: ()=>{router.push("/auth/login")}}) : 
+            toast.success(state.success, {onClose: ()=>{router.push("/auth/login")}, autoClose: 2000}) : 
             state.errors.forEach(error=>{ toast.error(error)})
         
     }, [state])
