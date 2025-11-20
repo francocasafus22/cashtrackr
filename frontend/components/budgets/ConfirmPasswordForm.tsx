@@ -4,6 +4,7 @@ import { useActionState, useEffect } from "react"
 import { deleteBudget } from "@/actions/delete-budget-action"
 import ErrorMessage from "../ui/ErrorMessage"
 import { toast } from "react-toastify"
+import Spinner from "../ui/Spinner"
 
 export default function ConfirmPasswordForm() {
     const pathname = usePathname()
@@ -20,7 +21,7 @@ export default function ConfirmPasswordForm() {
     const deleteBudgetWithPassword = deleteBudget.bind(null, budgetId)
 
 
-    const [state, dispatch] = useActionState(deleteBudgetWithPassword, {
+    const [state, dispatch, isPending] = useActionState(deleteBudgetWithPassword, {
         errors: [],
         success: ""
     })
@@ -64,11 +65,10 @@ export default function ConfirmPasswordForm() {
             />
             </div>
             <div className="grid grid-cols-2 gap-5">
-            <input
-                type="submit"
-                value='Eliminar Presupuesto'
+            <button
+                type="submit"                
                 className="bg-purple-950 hover:bg-purple-800 w-full p-3 rounded-lg text-white font-black cursor-pointer transition-colors"
-            />
+            >{isPending ? <Spinner color="text-amber-500"/> : 'Eliminar Presupuesto'}</button>
             <button
                 className="bg-amber-500 hover:bg-amber-600 w-full p-3 rounded-lg text-white font-black cursor-pointer transition-colors"
                 onClick={closeModal}

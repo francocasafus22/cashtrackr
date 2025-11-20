@@ -17,13 +17,15 @@ export default function CreateBudgetForm() {
   const router = useRouter();
 
   useEffect(()=>{
-    state.success ? 
+
+    if(state.success){
       toast.success(state.success, {
-        autoClose: 2500,
-        onClose: ()=>router.push("/admin"),
-        onClick: ()=>router.push("/admin"),
-      }) : state.errors.map(error=>toast.error(error))
-      
+        autoClose: 2000
+      })
+      router.push("/admin")
+    }else{
+      state.errors.map(error=>toast.error(error))
+    }      
   }, [state])
 
   return (

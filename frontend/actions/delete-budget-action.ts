@@ -1,7 +1,7 @@
 "use server"
 
 import getToken from "@/src/auth/token"
-import { Budget, ErrorSchema, PasswordValidationSchema } from "@/src/schemas"
+import { Budget, ErrorSchema, PasswordValidationSchema, SuccessSchema } from "@/src/schemas"
 
 type ActionStateType = {
     errors: string[],
@@ -65,8 +65,10 @@ export async function deleteBudget(budgetId: Budget['id'],prevState: ActionState
         }
     }
 
+    const {message} = SuccessSchema.parse(deleteBudgetJSON)
+
     return{
         errors: [],
-        success: deleteBudgetJSON.message
+        success: message
     }
 }
