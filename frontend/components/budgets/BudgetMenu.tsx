@@ -10,10 +10,14 @@ import {
 } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { Budget } from "@/src/schemas";
+import { useRouter } from "next/navigation";
 
 
 
 export default function BudgetMenu({budgetId} : {budgetId: Budget['id']}) {
+
+    const router = useRouter()
+
     return (
         <>
             <Menu as="div" className="relative flex-none">
@@ -52,7 +56,7 @@ export default function BudgetMenu({budgetId} : {budgetId: Budget['id']}) {
                         <button
                             type="button"
                             className="block px-3 py-1 text-sm leading-6 text-red-500 text-start hover:bg-gray-100 w-full"
-                            onClick={() => {}}
+                            onClick={() => {router.push(`?deleteBudgetId=${budgetId}`)}}
                         >
                             Eliminar Presupuesto
                         </button>
