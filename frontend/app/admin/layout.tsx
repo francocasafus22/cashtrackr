@@ -1,7 +1,9 @@
 
 import AdminMenu from "@/components/admin/AdminMenu";
 import Logo from "@/components/ui/Logo";
+import ModalContainer from "@/components/ui/ModalContainer";
 import ToastNotification from "@/components/ui/ToastNotification";
+import ModalProvider from "@/providers/ModalProvider";
 import { verifySession } from "@/src/auth/dal";
 import Link from "next/link";
 
@@ -14,8 +16,10 @@ export default async function AdminLayout({
 
     const {user} = await verifySession()
 
+    const year = new Date().getFullYear()
+
     return (
-    <>
+    <ModalProvider>
         <header className='bg-purple-950 py-5'>
         <div className='max-w-5xl mx-auto flex flex-col lg:flex-row justify-between items-center'>
             <div className='w-96'>
@@ -31,11 +35,13 @@ export default async function AdminLayout({
         </section>
         <ToastNotification />
 
+        <ModalContainer />
+
         <footer className='py-5'>
             <p className='text-center'>
-                Todos los Derechos Reservados {new Date().getFullYear()}
+                Todos los Derechos Reservados {year}
             </p>
         </footer>
-    </>
+    </ModalProvider>
     );
 }

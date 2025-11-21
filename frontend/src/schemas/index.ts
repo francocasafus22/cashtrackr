@@ -47,6 +47,15 @@ export const UserSchema = z.object({
   email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
 })
 
+export const ExpenseAPIResponseSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  amount: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  budgetId: z.number()
+})
+
 export const DraftBudgetSchema = z.object({
   name: z.string().min(1, {message: "El nombre del presupuesto es obligatorio"}),
   amount: z.coerce.number({message: "Cantidad no válida"}).min(1, {message: "Cantidad no válida"})
@@ -64,11 +73,12 @@ export const BudgetAPIResponseSchema = z.object({
   name: z.string(),
   amount: z.string(),
   userId: z.number(),
+  expenses: z.array(ExpenseAPIResponseSchema),
   createdAt: z.string(),
-  updatedAt: z.string()
+  updatedAt: z.string(),
 })
 
-export const BudgetsAPIResponseShcema = z.array(BudgetAPIResponseSchema)
+export const BudgetsAPIResponseShcema = z.array(BudgetAPIResponseSchema.omit({expenses: true}))
 
 
 export const JWTSchema = z.object({
