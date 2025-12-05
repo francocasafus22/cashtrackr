@@ -25,6 +25,7 @@ export default async function editExpense(
   prevState: ActionStateType,
   formData: FormData,
 ) {
+  console.log("desde edit expense");
   const expense = DraftExpenseSchema.safeParse({
     name: formData.get("name"),
     amount: formData.get("amount"),

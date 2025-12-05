@@ -7,6 +7,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import editExpense from "@/actions/edit-expense-action";
 import ErrorMessage from "../ui/ErrorMessage";
 import { toast } from "react-toastify";
+import Spinner from "../ui/Spinner";
 
 export default function EditExpenseForm({
   expenseId,
@@ -22,7 +23,8 @@ export default function EditExpenseForm({
     budgetId: +budgetId!,
     expenseId: +expenseId,
   });
-  const [state, dispatch] = useActionState(editExpenseWithBudgetId, {
+
+  const [state, dispatch, isPending] = useActionState(editExpenseWithBudgetId, {
     errors: [],
     success: "",
   });
@@ -68,11 +70,12 @@ export default function EditExpenseForm({
       >
         <ExpenseForm expense={expense} />
 
-        <input
+        <button
           type="submit"
           className="bg-amber-500 w-full rounded-lg p-3 text-white uppercase font-bold hover:bg-amber-600 cursor-pointer transition-colors"
-          value="Guardar Cambios"
-        />
+        >
+          {isPending ? <Spinner color="border-white" /> : "Guardar Cambios"}
+        </button>
       </form>
     </>
   );

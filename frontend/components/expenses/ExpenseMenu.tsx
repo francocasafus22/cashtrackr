@@ -11,6 +11,7 @@ import {
 import { ModalContext } from "@/providers/ModalProvider";
 import EditExpenseForm from "./EditExpenseForm";
 import { Expense } from "@/src/schemas";
+import DeleteExpenseForm from "./DeleteExpenseForm";
 
 export default function ExpenseMenu({
   expenseId,
@@ -57,7 +58,14 @@ export default function ExpenseMenu({
               <button
                 type="button"
                 className="block px-3 py-1 text-sm leading-6 text-red-500"
-                onClick={() => {}}
+                onClick={() =>
+                  openModal(
+                    <DeleteExpenseForm
+                      expenseId={expenseId}
+                      closeModal={closeModal}
+                    />,
+                  )
+                }
               >
                 Eliminar Gasto
               </button>

@@ -10,6 +10,7 @@ import {
 } from "../middlewares/budget.middleware";
 import { ExpensesController } from "../controllers/ExpensesController";
 import {
+  belongsToBudget,
   validateExpenseExist,
   validateExpenseId,
   validateExpenseInput,
@@ -25,6 +26,7 @@ router.param("budgetId", validateBudgetExist);
 router.param("budgetId", hasAccess);
 router.param("expenseId", validateExpenseId);
 router.param("expenseId", validateExpenseExist);
+router.param("expenseId", belongsToBudget);
 
 router.get("/", BudgetController.getAll);
 
@@ -32,7 +34,7 @@ router.post(
   "/",
   validateBudgetInput,
   handleInputErrors,
-  BudgetController.create
+  BudgetController.create,
 );
 
 router.get("/:budgetId", BudgetController.getOneByID);
@@ -41,7 +43,7 @@ router.put(
   "/:budgetId",
   validateBudgetInput,
   handleInputErrors,
-  BudgetController.updateBudget
+  BudgetController.updateBudget,
 );
 
 router.delete("/:budgetId", BudgetController.deleteBudget);
@@ -53,13 +55,13 @@ router.get(
   "/:budgetId/expenses/:expenseId",
   validateExpenseId,
   validateExpenseExist,
-  ExpensesController.getById
+  ExpensesController.getById,
 );
 router.post(
   "/:budgetId/expenses",
   validateExpenseInput,
   handleInputErrors,
-  ExpensesController.create
+  ExpensesController.create,
 );
 router.delete("/:budgetId/expenses/:expenseId", ExpensesController.deleteById);
 router.put("/:budgetId/expenses/:expenseId", ExpensesController.updateById);

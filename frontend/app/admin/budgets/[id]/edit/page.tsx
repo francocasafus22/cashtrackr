@@ -1,5 +1,5 @@
 import EditBudgetForm from "@/components/budgets/EditBudgetForm"
-import { Metadata } from "next"
+import  Metadata  from "next"
 import Link from "next/link"
 import { getBudget } from "@/src/services/budgets"
 

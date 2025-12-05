@@ -32,7 +32,7 @@ export default async function BudgetDetailsPage({
       <div className="flex flex-col md:flex-row gap-5 justify-between items-center">
         <div>
           <h1 className="font-black text-4xl text-purple-900">{budget.name}</h1>
-          <p className="text-xl font-bold">
+          <p className="text-xl font-bold text-center md:text-start">
             Administra tus {""} <span className="text-amber-500">gastos</span>
           </p>
         </div>

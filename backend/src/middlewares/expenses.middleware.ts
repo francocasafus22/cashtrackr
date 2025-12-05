@@ -13,7 +13,7 @@ declare global {
 export const validateExpenseId = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   await param("expenseId")
     .isInt()
@@ -32,7 +32,7 @@ export const validateExpenseId = async (
 export const validateExpenseExist = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { expenseId } = req.params;
@@ -51,7 +51,7 @@ export const validateExpenseExist = async (
 export const validateExpenseInput = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   await body("name")
     .notEmpty()
@@ -65,6 +65,19 @@ export const validateExpenseInput = async (
     .custom((value) => value > 0)
     .withMessage("La cantidad del gasto debe ser mayor a 0.")
     .run(req);
+
+  next();
+};
+
+export const belongsToBudget = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  if (req.budget.id !== req.expense.budgetId) {
+    const error = new Error("Acción no válida");
+    return res.status(403).json({ error: error.message });
+  }
 
   next();
 };
