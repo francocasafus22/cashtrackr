@@ -1,6 +1,6 @@
 import { verifySession } from "@/src/auth/dal";
 import Link from "next/link";
-import { Metadata } from "next";
+import  Metadata from "next";
 import { cookies } from "next/headers";
 import { BudgetAPIResponseSchema, BudgetsAPIResponseShcema } from "@/src/schemas";
 import getToken from "@/src/auth/token";

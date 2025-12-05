@@ -2,8 +2,6 @@
 
 import React, { createContext, useState, ReactNode } from "react";
 
-
-
 interface ModalContextType {
     modal: ReactNode | null;
     openModal: (modal: ReactNode) => void;

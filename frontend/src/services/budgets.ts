@@ -1,26 +1,27 @@
-import { cache } from "react"
-import getToken from "../auth/token"
-import { notFound } from "next/navigation"
-import { BudgetAPIResponseSchema } from "../schemas"
+import { cache } from "react";
+import getToken from "../auth/token";
+import { notFound } from "next/navigation";
+import { BudgetAPIResponseSchema } from "../schemas";
 
-export const getBudget =  cache(async (id: string) => {
+export const getBudget = cache(async (id: string) => {
+  const token = await getToken();
+  const url = `${process.env.API_URL}/budgets/${id}`;
+  const req = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    next: {
+      tags: ["budget"],
+    },
+  });
 
-    const token = await getToken()
-    const url = `${process.env.API_URL}/budgets/${id}`
-    const req = await fetch(url, {
-        headers:{
-            'Authorization': `Bearer ${token}`
-        }
-    })
+  const json = await req.json();
 
-    const json = await req.json()
+  if (!req.ok) {
+    notFound();
+  }
 
-    if(!req.ok){
-        notFound()
-    }
-    
-    const budget = BudgetAPIResponseSchema.parse(json)
+  const budget = BudgetAPIResponseSchema.parse(json);
 
-    return budget
-
-})
+  return budget;
+});
