@@ -3,22 +3,17 @@ import { authenticate } from "@/actions/authenticate-user-action";
 import { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../ui/Spinner";
-import { useRouter } from "next/navigation";
-
 
 export default function LoginForm() {
-
   const [state, dispatch, isPending] = useActionState(authenticate, {
     errors: [],
-    success: ""
-  })
+    success: "",
+  });
 
-  useEffect(()=>{
-      state.success? 
-        toast.success("Has iniciado sesión con exito")
-      : state.errors.map(error=>toast.error(error))
-      
-  }, [state])
+  useEffect(() => {
+    if (state.success) toast.success("Has iniciado sesión con exito");
+    else state.errors.map((error) => toast.error(error));
+  }, [state]);
 
   return (
     <>
@@ -49,7 +44,9 @@ export default function LoginForm() {
         <button
           type="submit"
           className="bg-purple-950 hover:bg-purple-800 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer"
-        >{isPending ? <Spinner color="text-orange-400"/> : "Iniciar Sesion"}</button>
+        >
+          {isPending ? <Spinner color="text-orange-400" /> : "Iniciar Sesion"}
+        </button>
       </form>
     </>
   );

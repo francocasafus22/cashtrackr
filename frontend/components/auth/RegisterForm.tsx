@@ -9,27 +9,26 @@ import Spinner from "../ui/Spinner";
 import { toast } from "react-toastify";
 
 export default function RegisterForm() {
-
-  const ref = useRef<HTMLFormElement>(null)
+  const ref = useRef<HTMLFormElement>(null);
 
   const [state, dispatch, isPending] = useActionState(register, {
     errors: [],
     success: "",
   });
 
-  useEffect(()=>{
-    // Si el register es exitoso 
-    if(state.success){
+  useEffect(() => {
+    // Si el register es exitoso
+    if (state.success) {
       // Resetea el formulario (ref => form)
       toast.info("Revisá el mail para confirmar tu cuenta");
       ref.current?.reset();
     }
-  }, [state])
+  }, [state]);
 
   return (
     <form className="mt-14 space-y-5" noValidate action={dispatch} ref={ref}>
       {state.errors.map((error) => (
-        <ErrorMessage>{error}</ErrorMessage>
+        <ErrorMessage key={error}>{error}</ErrorMessage>
       ))}
 
       {state.success && <SuccessMessage>{state.success}</SuccessMessage>}
@@ -83,7 +82,7 @@ export default function RegisterForm() {
         disabled={isPending}
         className="bg-purple-950 hover:bg-purple-800 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer block"
       >
-        {isPending ? <Spinner color="text-orange-400"/> : "Registrarme"}
+        {isPending ? <Spinner color="text-orange-400" /> : "Registrarme"}
       </button>
     </form>
   );

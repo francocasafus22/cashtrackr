@@ -1,68 +1,56 @@
 "use client";
 
 import { Fragment, useContext } from "react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import {
-    Dialog,
-    DialogPanel,
-    Transition,
-    TransitionChild,
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild,
 } from "@headlessui/react";
-import AddExpenseForm from "../expenses/AddExpenseForm";
-import EditExpenseForm from "../expenses/EditExpenseForm";
-import DeleteExpenseForm from "../expenses/DeleteExpenseForm";
 import { ModalContext } from "@/providers/ModalProvider";
 
-const componentsMap = {
-    "AddExpense" : AddExpenseForm,
-    "EditExpense": EditExpenseForm,
-    "DeleteExpense": DeleteExpenseForm
-}
-
 export default function ModalContainer() {
-    
+  const modalContext = useContext(ModalContext);
 
-    const modalContext = useContext(ModalContext)
-    
-    if(!modalContext || !modalContext.modal) return null
+  if (!modalContext || !modalContext.modal) return null;
 
-    const {modal, closeModal} = modalContext;
+  const { modal, closeModal } = modalContext;
 
-    return (    
-        <>
-        <Transition appear show={!!modal} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={closeModal}>
-            <TransitionChild
+  return (
+    <>
+      <Transition appear show={!!modal} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+          <TransitionChild
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black/60" />
+          </TransitionChild>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <TransitionChild
                 as={Fragment}
                 enter="ease-out duration-300"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
                 leave="ease-in duration-200"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-            >
-                <div className="fixed inset-0 bg-black/60" />
-            </TransitionChild>
-
-            <div className="fixed inset-0 overflow-y-auto">
-                <div className="flex min-h-full items-center justify-center p-4 text-center">
-                <TransitionChild
-                    as={Fragment}
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0 scale-95"
-                    enterTo="opacity-100 scale-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100 scale-100"
-                    leaveTo="opacity-0 scale-95"
-                >
-                    <DialogPanel className="w-full max-w-5xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-16">                        
-                        {modal}
-                    </DialogPanel>
-                </TransitionChild>
-                </div>
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <DialogPanel className="w-full max-w-5xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-16">
+                  {modal}
+                </DialogPanel>
+              </TransitionChild>
             </div>
-            </Dialog>
-        </Transition>
-        </>
-    );
+          </div>
+        </Dialog>
+      </Transition>
+    </>
+  );
 }

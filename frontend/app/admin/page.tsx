@@ -1,9 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import {
-  BudgetAPIResponseSchema,
-  BudgetsAPIResponseShcema,
-} from "@/src/schemas";
+import { BudgetsAPIResponseShcema } from "@/src/schemas";
 import getToken from "@/src/auth/token";
 import { formatCurrency, formatDate } from "@/src/utils";
 import BudgetMenu from "@/components/budgets/BudgetMenu";
