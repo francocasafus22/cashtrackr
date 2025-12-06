@@ -18,7 +18,7 @@ router.post(
   body("email").isEmail().withMessage("Email no válido"),
   handleInputErrors,
 
-  AuthController.createAccount
+  AuthController.createAccount,
 );
 
 router.post(
@@ -26,7 +26,7 @@ router.post(
   body("email").isEmail().withMessage("Email no válido"),
   body("password").notEmpty().withMessage("La contraseña es requerida"),
   handleInputErrors,
-  AuthController.login
+  AuthController.login,
 );
 
 router.post(
@@ -34,7 +34,7 @@ router.post(
   body("token").isLength({ min: 6, max: 6 }).withMessage("Token no válido"),
   handleInputErrors,
 
-  AuthController.confirmAccount
+  AuthController.confirmAccount,
 );
 
 // Envia el mail con el token, para cambiar la contraseña olvidada
@@ -42,7 +42,7 @@ router.post(
   "/forgot-password",
   body("email").isEmail().withMessage("Email no válido"),
   handleInputErrors,
-  AuthController.forgotPassword
+  AuthController.forgotPassword,
 );
 
 // Valida el token recibido al mail
@@ -53,7 +53,7 @@ router.post(
     .isLength({ min: 6, max: 6 })
     .withMessage("Token no válido"),
   handleInputErrors,
-  AuthController.validateToken
+  AuthController.validateToken,
 );
 
 // Cambia la contraseña con el token validado
@@ -68,7 +68,7 @@ router.post(
     .isLength({ min: 8 })
     .withMessage("El password es muy corto, mínimo 8 caracteres."),
   handleInputErrors,
-  AuthController.resetPasswordWithToken
+  AuthController.resetPasswordWithToken,
 );
 
 // Cambia la contraseña actual ya sabiendola
@@ -84,22 +84,24 @@ router.post(
     .custom((value, { req }) => value !== req.body.current_password)
     .withMessage("La nueva contraseña debe ser diferente a la actual."),
   handleInputErrors,
-  AuthController.updateCurrentPassword
+  AuthController.updateCurrentPassword,
 );
 
 router.get(
   "/user",
   authenticate,
 
-  AuthController.user
+  AuthController.user,
 );
+
+router.put("/user", authenticate, AuthController.editProfile);
 
 router.post(
   "/check-password",
   authenticate,
   body("password").notEmpty().withMessage("Debe su contraseña"),
   handleInputErrors,
-  AuthController.checkPassword
+  AuthController.checkPassword,
 );
 
 export default router;

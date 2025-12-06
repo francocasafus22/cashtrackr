@@ -42,6 +42,30 @@ export class AuthController {
     }
   };
 
+  static editProfile = async (req: Request, res: Response) => {
+    try {
+      const { name, email } = req.body;
+      const user = req.user;
+
+      const userExist = await User.findOne({ where: { email } });
+
+      if (userExist && userExist.email != user.email) {
+        const error = new Error("El email ya está en uso");
+        res.status(403).json({ error: error.message });
+        return;
+      }
+
+      if (!(user.email === email && user.name === name)) {
+        Object.assign(user, { name, email });
+        await user.save();
+      }
+
+      res.json({ message: "Usuario modificado correctamente" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
   static confirmAccount = async (req: Request, res: Response) => {
     try {
       const { token } = req.body;
@@ -134,7 +158,7 @@ export class AuthController {
         return;
       }
 
-      res.json({message: "Token válido, asigna un nuevo password"});
+      res.json({ message: "Token válido, asigna un nuevo password" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

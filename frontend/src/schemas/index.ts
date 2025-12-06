@@ -17,12 +17,35 @@ export const RegisterSchema = z
     path: ["password_confirmation"],
   });
 
+export const EditUserSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: "El email es obligatorio" })
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: "Email no válido" }),
+  name: z.string().min(1, { message: "Tu nombre no puede ir vacio" }),
+});
+
 export const ForgotPasswordSchema = z.object({
   email: z
     .string()
     .min(1, { message: "El Email es obligatorio" })
     .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: "Email no válido" }),
 });
+
+export const UpdatePasswordSchema = z
+  .object({
+    current_password: z
+      .string()
+      .min(1, { message: "El password no puede ir vacio" }),
+    password: z
+      .string()
+      .min(8, { message: "EL password es muy corto, minimo 8 caracteres" }),
+    password_confirmation: z.string(),
+  })
+  .refine((data) => data.password == data.password_confirmation, {
+    message: "Las constraseñas no son iguales",
+    path: ["password_confirmation"],
+  });
 
 export const LoginSchema = z.object({
   email: z
