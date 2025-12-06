@@ -4,11 +4,15 @@ import { deleteBudget } from "@/actions/delete-budget-action";
 import ErrorMessage from "../ui/ErrorMessage";
 import { toast } from "react-toastify";
 import Spinner from "../ui/Spinner";
-import { useParams } from "next/navigation";
+import { Budget } from "@/src/schemas";
 
-export default function ConfirmPasswordForm() {
-  const { budgetId } = useParams();
-
+export default function ConfirmPasswordForm({
+  closeModal,
+  budgetId,
+}: {
+  closeModal: () => void;
+  budgetId: Budget["id"];
+}) {
   const deleteBudgetWithPassword = deleteBudget.bind(null, +budgetId!);
 
   const [state, dispatch, isPending] = useActionState(
@@ -22,8 +26,9 @@ export default function ConfirmPasswordForm() {
   useEffect(() => {
     if (state.success) {
       toast.success(state.success);
+      closeModal();
     }
-  }, [state]);
+  }, [state, closeModal]);
 
   return (
     <>
