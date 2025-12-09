@@ -1,7 +1,26 @@
+import LinkNavbar from "@/components/ui/LinkNavbar";
 import Logo from "@/components/ui/Logo";
+import { getSession } from "@/src/auth/dal";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getSession();
+
+  const navigation = {
+    "no-session": (
+      <>
+        <LinkNavbar href="/auth/login" label="Iniciar Sesión" />
+        <LinkNavbar href="/auth/register" label="Registarse" />
+      </>
+    ),
+    session: (
+      <>
+        <LinkNavbar href="/admin" label="Dashboard" />
+        <LinkNavbar href="/admin/profile/settings" label="Mi Perfil" />
+      </>
+    ),
+  };
+
   return (
     <>
       <header className=" bg-purple-950 py-5">
@@ -10,18 +29,7 @@ export default function Home() {
             <Logo />
           </div>
           <nav className="flex flex-col lg:flex-row lg:justify-end gap-5 w-full ">
-            <Link
-              href="/auth/login"
-              className="font-bold text-white hover:text-amber-500 uppercase text-sm text-center"
-            >
-              Iniciar Sesión
-            </Link>
-            <Link
-              href="/auth/register"
-              className="font-bold text-white hover:text-amber-500 uppercase text-sm text-center"
-            >
-              Registrarme
-            </Link>
+            {session ? navigation["session"] : navigation["no-session"]}
           </nav>
         </div>
       </header>
